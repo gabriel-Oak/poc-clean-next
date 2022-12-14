@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import Home from '../src/pages/home';
-import { HomeContextProvider } from '../src/pages/home/context';
+import Home from '../src/pages/Home';
+import { HomeContextProvider } from '../src/pages/Home/context';
 
 const HomePage: FC = () => (
   <HomeContextProvider>
