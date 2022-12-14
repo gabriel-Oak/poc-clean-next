@@ -3,7 +3,10 @@ export class CustomError extends Error {
 
   public error?: Error;
 
-  constructor(props: CustomError) {
+  constructor(props: {
+    message: string;
+    error?: unknown;
+  }) {
     super();
     Object.assign(this, props);
   }

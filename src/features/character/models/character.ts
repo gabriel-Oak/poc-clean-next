@@ -1,4 +1,7 @@
-import CharacterLocation from './character-location';
+export interface CharacterLocation {
+  name: string;
+  url: string;
+}
 
 export default class Character {
   public id!: number;

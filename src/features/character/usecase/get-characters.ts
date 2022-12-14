@@ -1,15 +1,13 @@
-import { PaginatedResult } from '../../../utils/contracts/request';
+import { PaginatedResult } from '../../../utils/types/request';
 import { CustomError } from '../../../utils/custom-error';
-import { ICharacterExternalDatasource } from '../datasources/external-datasource';
+import CharacterExternalDatasource from '../datasources/external-datasource';
 import Character from '../models/character';
-import { CharacterFilters } from '../models/character-filter';
+import { singleton } from 'tsyringe';
 
-export interface IGetCharactersUsecase {
-  execute: (page: number, filters?: CharacterFilters) => Promise<PaginatedResult<Character> | CustomError>;
-}
 
-export class GetCharatersUsecase implements IGetCharactersUsecase {
-  constructor(private datasource: ICharacterExternalDatasource) {}
+@singleton()
+export default class GetCharatersUsecase {
+  constructor(private datasource: CharacterExternalDatasource) {}
 
   async execute(): Promise<PaginatedResult<Character> | CustomError> { 
     return this.datasource.getAll();
