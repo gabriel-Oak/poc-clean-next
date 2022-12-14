@@ -17,6 +17,6 @@
     "emitDecoratorMetadata": true,
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/jest.setup.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.setup.ts"],
   "exclude": ["node_modules"],
 }

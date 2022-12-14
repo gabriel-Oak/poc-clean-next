@@ -11,15 +11,15 @@ const HomeContext = createContext({} as HomeContextProps);
 
 export interface HomeContextProviderProps {
   children: JSX.Element;
-  controllerInstance?: HomeController;
+  controllerFactory?: typeof createHomeController;
 }
 
-export const HomeContextProvider: FC<HomeContextProviderProps> = ({
-  children, controllerInstance
+export const HomeProvider: FC<HomeContextProviderProps> = ({
+  children, controllerFactory
 }) => {
   const [data, setData] = useState<HomeState>({ isLoading: false });
   const controller = useMemo(
-    () => controllerInstance ?? createHomeController(data, setData),
+    () => controllerFactory?.(data, setData) ?? createHomeController(data, setData),
     [setData]
   );
 
@@ -40,8 +40,8 @@ export const HomeContextProvider: FC<HomeContextProviderProps> = ({
 
 export const useHomeState = () => useContext(HomeContext);
 
-export const withHomeState = (Component: ComponentType, controller?: HomeController) => () => (
-  <HomeContextProvider controllerInstance={controller}>
+export const withHomeState = (Component: ComponentType, controller?: typeof createHomeController) => () => (
+  <HomeProvider controllerFactory={controller}>
     <Component />
-  </HomeContextProvider>
+  </HomeProvider>
 );

@@ -1,8 +1,7 @@
 import { mock, mockReset } from 'jest-mock-extended';
 import Character from '../../features/character/models/character';
 import GetCharatersUsecase from '../../features/character/usecase/get-characters';
-import GetDetailsUsecase from '../../features/character/usecase/get-details';
-import HomeController from './controller';
+import HomeController, { createHomeController } from './controller';
 import character from '../../utils/mocks/characters.json';
 import { PaginatedResult } from '../../utils/types/request';
 import { CustomError } from '../../utils/custom-error';
@@ -23,6 +22,11 @@ describe('HomeController tests', () => {
   beforeEach(() => {
     setDataMock.mockClear();
     mockReset(getCharacterMock);
+  });
+
+  it('Factory should return a controller', () => {
+    const controller = createHomeController(dataMock, setDataMock);
+    expect(controller).toBeInstanceOf(HomeController);
   });
 
   it('Should set data as loading, then load characters', async () => {

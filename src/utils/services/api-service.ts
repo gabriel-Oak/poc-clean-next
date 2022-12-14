@@ -1,15 +1,15 @@
 import axios, { Axios, AxiosRequestConfig } from 'axios';
-import { singleton } from 'tsyringe';
+import { inject, registry, singleton } from 'tsyringe';
 
+@registry([{
+  token: 'RickMortyAxios',
+  useValue: axios.create({
+    baseURL: 'https://rickandmortyapi.com/api',
+  }),
+}])
 @singleton()
 export default class ApiService {
-  client: Axios
-
-  constructor() {
-    this.client = axios.create({
-      baseURL: 'https://rickandmortyapi.com/api',
-    });
-  }
+  constructor(@inject('RickMortyAxios') private client: Axios) { }
 
   async get<T>(url: string, config?: AxiosRequestConfig) {
     const { data } = await this.client.get<T>(url, config);

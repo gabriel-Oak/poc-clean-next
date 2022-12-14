@@ -1,11 +1,8 @@
-export class PaginatedInfo {
-  public count!: number;
-
-  public pages!: number;
-
-  public next?: string;
-
-  public prev?: string;
+export interface PaginatedInfo {
+  count: number;
+  pages: number;
+  next?: string;
+  prev?: string;
 }
 
 export class PaginatedResult<T> {

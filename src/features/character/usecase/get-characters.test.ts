@@ -1,9 +1,9 @@
-import {instance, mock, when} from 'ts-mockito';
 import Character from "../models/character";
 import character from '../../../utils/mocks/characters.json';
 import GetCharatersUsecase from './get-characters';
 import { PaginatedResult } from '../../../utils/types/request';
 import CharacterExternalDatasource from '../datasources/external-datasource';
+import { mock, mockReset } from "jest-mock-extended";
 
 describe('GetCharactersUsecase tests', () => {
   const characterMock = new Character(character);
@@ -14,14 +14,16 @@ describe('GetCharactersUsecase tests', () => {
     },
     results: [characterMock],
   });
-
   const datasourceMock = mock<CharacterExternalDatasource>();
 
-  it('Should return instance of a Character', async () => {
-    when(datasourceMock.getAll).thenReturn(async () => resultMock);
-    const datasource = instance(datasourceMock);
+  beforeEach(() => {
+    mockReset(datasourceMock);
+  });
 
-    const usecase = new GetCharatersUsecase(datasource); 
+  it('Should return instance of a Character', async () => {
+    datasourceMock.getAll.mockImplementation(async () => resultMock);
+    const usecase = new GetCharatersUsecase(datasourceMock); 
+
     const result = await usecase.execute();
     expect(result).toEqual((resultMock));
   });

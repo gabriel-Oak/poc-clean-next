@@ -3,7 +3,7 @@ import { CustomError } from '../../../utils/custom-error';
 import Character from '../models/character';
 import { CharacterFilters } from '../types/character-filter';
 import { singleton } from 'tsyringe';
-import ApiService from '../../../utils/api-service';
+import ApiService from '../../../utils/services/api-service';
 
 @singleton()
 export default class CharacterExternalDatasource {

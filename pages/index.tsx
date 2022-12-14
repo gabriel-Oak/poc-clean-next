@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import Home from '../src/pages/Home';
-import { HomeContextProvider } from '../src/pages/Home/context';
+import { HomeProvider } from '../src/pages/Home/context';
 
 const HomePage: FC = () => (
-  <HomeContextProvider>
+  <HomeProvider>
     <Home />
-  </HomeContextProvider>
+  </HomeProvider>
 );
 
 export default HomePage;
