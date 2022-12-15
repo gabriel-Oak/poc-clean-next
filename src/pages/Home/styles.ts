@@ -7,12 +7,13 @@ export const Root = styled('div')(({theme}) => `
 `);
 
 export const CardList = styled('section')(({ theme }) => `
-display: grid;
+  display: grid;
   grid-template-columns: repeat(2, calc(50% - ${
     +theme.spacing(3).replace('px', '') / 2
   }px));
   column-gap: ${theme.spacing(3)};
   grid-row-gap: ${theme.spacing(3)};
+  width: 100%;
   
   ${theme.breakpoints.down('md')} {
     display: flex;
