@@ -1,10 +1,11 @@
 import { createContext, FC, useContext, useState, ComponentType, useEffect, useMemo } from 'react';
-import HomeController, { createHomeController } from './controller';
+import { CharacterFilters } from '../../features/character/types/character-filter';
+import { createHomeController } from './controller';
 import { HomeState } from './types';
 
 export interface HomeContextProps {
-  data: HomeState;
-  controller: HomeController;
+  state: HomeState;
+  searchCharacters: (page: number, filters?: CharacterFilters) => void;
 }
 
 const HomeContext = createContext({} as HomeContextProps);
@@ -17,30 +18,36 @@ export interface HomeContextProviderProps {
 export const HomeProvider: FC<HomeContextProviderProps> = ({
   children, controllerFactory
 }) => {
-  const [data, setData] = useState<HomeState>({ isLoading: false });
+  const [state, setState] = useState<HomeState>({ 
+    isLoading: false,
+    page: 1,
+  });
+
   const controller = useMemo(
-    () => controllerFactory?.(data, setData) ?? createHomeController(data, setData),
-    [setData]
+    () => controllerFactory?.() ?? createHomeController(),
+    []
   );
 
-
   useEffect(() => {
-    controller.getAll();
+    controller.search({ state, setState });
   }, []);
+
+  const searchCharacters: HomeContextProps['searchCharacters'] = (page, filters) => controller
+    .search({ state, setState, filters, page })
 
   return (
     <HomeContext.Provider value={{
-      data,
-      controller,
+      state,
+      searchCharacters,
     }}>
       {children}
     </HomeContext.Provider>
   );
 }
 
-export const useHomeState = () => useContext(HomeContext);
+export const useHome = () => useContext(HomeContext);
 
-export const withHomeState = (Component: ComponentType, controller?: typeof createHomeController) => () => (
+export const withHome = (Component: ComponentType, controller?: typeof createHomeController) => () => (
   <HomeProvider controllerFactory={controller}>
     <Component />
   </HomeProvider>

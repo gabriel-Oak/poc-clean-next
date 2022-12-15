@@ -13,6 +13,12 @@ export const ImageContainer = styled('div')`
   flex: 1;
 `;
 
+export const Name = styled(Typography)(({ theme }) => `
+  ${theme.breakpoints.down('md')} {
+    font-size: 1.425rem;
+  }
+`);
+
 export const Content = styled(CardContent)`
   flex: 2;
   display: flex;

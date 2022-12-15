@@ -3,6 +3,7 @@ import { PaginatedInfo } from "../../utils/types/request";
 
 export interface HomeState {
   isLoading: boolean;
+  page: number;
   characters?: Character[];
   pagination?: PaginatedInfo;
 }

@@ -2,10 +2,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from "@mui/system";
 
 export const Root = styled('div')(({theme}) => `
+  display: flex;
+  padding: ${theme.spacing(2)};
 `);
 
 export const CardList = styled('section')(({ theme }) => `
-padding: ${theme.spacing(2)};
 display: grid;
   grid-template-columns: repeat(2, calc(50% - ${
     +theme.spacing(3).replace('px', '') / 2

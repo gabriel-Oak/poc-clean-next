@@ -1,7 +1,7 @@
 import { CardMedia, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import Character from '../../../features/character/models/character';
-import { Container, Content, ImageContainer, Root, Subtitle } from './styles';
+import { Container, Content, ImageContainer, Name, Root, Subtitle } from './styles';
 
 interface CharacterCardsProps {
   character: Character;
@@ -23,9 +23,9 @@ const CharacterCard: FC<CharacterCardsProps> = ({
 
         <Content>
           <div>
-            <Typography variant='h4' fontWeight={500}>
+            <Name variant='h4' fontWeight={500}>
               {character.name}
-            </Typography>
+            </Name>
             <Typography variant='body1'>
               {`${character.status} - ${character.species}`}
             </Typography>

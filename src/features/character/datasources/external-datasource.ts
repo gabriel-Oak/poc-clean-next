@@ -9,9 +9,12 @@ import ApiService from '../../../utils/services/api-service';
 export default class CharacterExternalDatasource {
   constructor(private client: ApiService) { }
 
-  async getAll(filters?: CharacterFilters): Promise<PaginatedResult<Character> | CustomError> {
+  async getAll(params?: {
+    filters?: CharacterFilters; 
+    page?: number;
+  }): Promise<PaginatedResult<Character> | CustomError> {
     try {
-      const data = await this.client.get<PaginatedResult<Character>>('/character', { params: filters });
+      const data = await this.client.get<PaginatedResult<Character>>('/character', { params });
       return new PaginatedResult<Character>({
         ...data,
         results: data.results.map((c) => new Character(c)),

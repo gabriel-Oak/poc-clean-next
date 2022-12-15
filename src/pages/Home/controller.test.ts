@@ -7,8 +7,8 @@ import { PaginatedResult } from '../../utils/types/request';
 import { CustomError } from '../../utils/custom-error';
 
 describe('HomeController tests', () => {
-  const dataMock = { isLoading: false };
-  const setDataMock = jest.fn();
+  const state = { isLoading: false, page: 1 };
+  const setState = jest.fn();
   const getCharacterMock = mock<GetCharatersUsecase>();
   const characterMock = new Character(character);
   const resultMock = new PaginatedResult<Character>({
@@ -20,31 +20,31 @@ describe('HomeController tests', () => {
   });
 
   beforeEach(() => {
-    setDataMock.mockClear();
+    setState.mockClear();
     mockReset(getCharacterMock);
   });
 
   it('Factory should return a controller', () => {
-    const controller = createHomeController(dataMock, setDataMock);
+    const controller = createHomeController();
     expect(controller).toBeInstanceOf(HomeController);
   });
 
   it('Should set data as loading, then load characters', async () => {
     getCharacterMock.execute.mockImplementation(async () => resultMock);
-    const controller = new HomeController(
-      dataMock,
-      setDataMock,
-      getCharacterMock,
-    );
+    const controller = new HomeController(getCharacterMock);
 
-    await controller.getAll();
-    expect(setDataMock).toHaveBeenCalledWith({ isLoading: true });
-    expect(setDataMock).toHaveBeenCalledWith({
+    await controller.search({ state, setState, page: 1 });
+    expect(setState).toHaveBeenCalledWith({
+      isLoading: true,
+      page: 1,
+    });
+    expect(setState).toHaveBeenCalledWith({
       isLoading: false,
       pagination: {
         count: 1,
         pages: 1,
       },
+      page: 1,
       characters: [characterMock],
     });
   });
@@ -53,34 +53,36 @@ describe('HomeController tests', () => {
     getCharacterMock.execute.mockImplementation(async () => new CustomError({
       message: 'Ooooooooooooh Nooooooo'
     }));
-    const controller = new HomeController(
-      dataMock,
-      setDataMock,
-      getCharacterMock,
-    );
+    const controller = new HomeController(getCharacterMock);
 
-    await controller.getAll();
-    expect(setDataMock).toHaveBeenCalledWith({ isLoading: true });
-    expect(setDataMock).toHaveBeenCalledWith({ isLoading: false });
+    await controller.search({ state, setState, page: 1 });
+    expect(setState).toHaveBeenCalledWith({
+      isLoading: true,
+      page: 1,
+    });
+    expect(setState).toHaveBeenCalledWith({
+      isLoading: false,
+      page: 1,
+    });
   });
 
   it('Should set data as loading, then load characters', async () => {
     getCharacterMock.execute.mockImplementation(async () => resultMock);
-    const controller = new HomeController(
-      dataMock,
-      setDataMock,
-      getCharacterMock,
-    );
+    const controller = new HomeController(getCharacterMock);
 
-    await controller.getAll();
-    expect(setDataMock).toHaveBeenCalledWith({ isLoading: true });
-    expect(setDataMock).toHaveBeenCalledWith({
+    await controller.search({ state, setState, page: 2 });
+    expect(setState).toHaveBeenCalledWith({
+      isLoading: true,
+      page: 1,
+    });
+    expect(setState).toHaveBeenCalledWith({
       isLoading: false,
       pagination: {
         count: 1,
         pages: 1,
       },
       characters: [characterMock],
+      page: 2,
     });
   });
 

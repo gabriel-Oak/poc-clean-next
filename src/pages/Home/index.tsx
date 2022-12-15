@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
 import CharacterCard from './Character';
-import { useHomeState } from './context';
+import { useHome } from './context';
+import Filter from './Filter';
 import { CardList, Loader, Root } from './styles';
 
 const Home: FC = () => {
-  const { data } = useHomeState();
+  const { state: { isLoading, characters } } = useHome();
 
   return (
     <Root>
-      {data.isLoading && <Loader />}
+      {isLoading && <Loader />}
 
-      <CardList>
-        {data.characters?.map((character) => (
+      <Filter />
+
+      <CardList >
+        {characters?.map((character) => (
           <CharacterCard
             key={character.id}
             character={character}

@@ -1,7 +1,8 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
 import HomeController from './controller';
-import { render, act } from '@testing-library/react';
-import { HomeProvider } from './context';
+import { render } from '@testing-library/react';
+import { HomeContextProps, HomeProvider, useHome } from './context';
+import createContextTester from '../../utils/createContextTester';
 
 describe('HomeContext tests', () => {
   const controllerMock = mock<HomeController>();
@@ -11,7 +12,7 @@ describe('HomeContext tests', () => {
   });
 
   it('Should search for characts at startup', async () => {
-    const component = render(
+    render(
       <HomeProvider
         controllerFactory={() => controllerMock}
       >
@@ -19,6 +20,23 @@ describe('HomeContext tests', () => {
       </HomeProvider>
     );
 
-    expect(controllerMock.getAll).toHaveBeenCalled();
+    expect(controllerMock.search).toHaveBeenCalled();
+  });
+
+  it('Should search for characts by name and page 2', async () => {
+    const Tester = createContextTester<HomeContextProps>(useHome, ({ searchCharacters }) => {
+      searchCharacters(2, { name: 'thigas' });
+    });
+
+    render(
+      <HomeProvider controllerFactory={() => controllerMock}>
+        <Tester />
+      </HomeProvider>
+    );
+
+    expect(controllerMock.search).toHaveBeenCalledWith(expect.objectContaining({
+      filters: { name: 'thigas' },
+      page: 2,
+    }));
   });
 });
