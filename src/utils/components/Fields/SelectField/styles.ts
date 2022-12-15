@@ -1,16 +1,8 @@
-import { makeStyles } from '@material-ui/styles';
+import { InputLabel } from '@mui/material';
+import { styled } from '@mui/system';
 
-const useStyles = makeStyles(() => ({
-  selectLabel: {
-    paddingLeft: 14,
-    top: -4,
-    '&.Mui-focused, &.MuiFormLabel-filled': {
-      paddingTop: 10,
-    },
+export const Label = styled(InputLabel)({
+  '&.Mui-focused, &.MuiFormLabel-filled': {
+    paddingTop: 12,
   },
-  helperText: {
-    marginLeft: 14,
-  },
-}));
-
-export default useStyles;
+});

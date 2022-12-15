@@ -4,6 +4,7 @@ import { styled } from "@mui/system";
 export const Root = styled('div')(({theme}) => `
   display: flex;
   padding: ${theme.spacing(2)};
+  margin-top: 70px;
 `);
 
 export const CardList = styled('section')(({ theme }) => `
@@ -24,6 +25,7 @@ export const CardList = styled('section')(({ theme }) => `
 export const Loader = styled(LinearProgress)`
   position: fixed;
   top: 0;
+  z-index: 10000;
   left: 0;
   width: 100vw;
 `;

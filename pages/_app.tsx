@@ -12,15 +12,21 @@ import {
   ThemeProvider
 } from '@mui/material/styles';
 import theme from '../src/utils/theme';
+import { AppBar, Toolbar } from '@mui/material';
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-      <CssBaseline />
+      <AppBar>
+        <Toolbar>
+          CLEAN NEXT.JS
+        </Toolbar>
+      </AppBar>
 
       <Component {...pageProps} />
     </ThemeProvider>

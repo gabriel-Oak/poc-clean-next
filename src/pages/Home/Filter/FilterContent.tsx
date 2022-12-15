@@ -1,14 +1,22 @@
 import { FC } from 'react';
 import { Close } from '@mui/icons-material';
-import { Divider, IconButton, Toolbar } from '@mui/material';
+import { Button, Divider, FormControlLabel, IconButton, MenuItem, Radio, Toolbar } from '@mui/material';
 import { Box } from '@mui/system';
-import { Container } from './styles';
+import { Container, Form } from './styles';
 import { useFilter } from './context';
 import TextField from '../../../utils/components/Fields/TextField';
+import SelectField from '../../../utils/components/Fields/SelectField';
+import { CharacterStatus } from '../../../features/character/types/character-filter';
+import RadioGroupField from '../../../utils/components/Fields/RadioGroupField';
 
 const FilterContent: FC = () => {
   const { onSubmit, toggleDrawer, state } = useFilter();
   const { handleSubmit, control } = state.form;
+
+  const status = Object.keys(CharacterStatus).map((k) => ({
+    label: `${k[0].toUpperCase()}${k.substring(1)}`,
+    value: k
+  }));
 
   return (
     <>
@@ -32,7 +40,7 @@ const FilterContent: FC = () => {
         height={state.containerRef?.current?.clientHeight || 200}
         windowHeight={global.innerHeight}
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             name="name"
             label="Name"
@@ -42,8 +50,6 @@ const FilterContent: FC = () => {
             control={control}
           />
 
-          <Box height={16} />
-
           <TextField
             name="species"
             label="Species"
@@ -52,7 +58,55 @@ const FilterContent: FC = () => {
             fullWidth
             control={control}
           />
-        </form>
+
+          <SelectField
+            name="gender"
+            defaultValue=""
+            label="Gender"
+            control={control}
+          >
+            <MenuItem value="female" >
+              Female
+            </MenuItem>
+
+            <MenuItem value="male" >
+              Male
+            </MenuItem>
+
+            <MenuItem value="genderless" >
+              Genderless
+            </MenuItem>
+          </SelectField>
+
+          <RadioGroupField
+            name="status"
+            defaultValue=""
+            label="Status"
+            row
+            control={control}
+          >
+            <FormControlLabel
+              value=""
+              control={<Radio color="primary" size="small" />}
+              label="All"
+              labelPlacement="end"
+            />
+
+            {status.map(({ label, value }: any) => (
+              <FormControlLabel
+                key={value}
+                value={value}
+                control={<Radio color="primary" size="small" />}
+                label={label}
+                labelPlacement="end"
+              />
+            ))}
+          </RadioGroupField>
+
+          <Button type="submit" fullWidth variant="contained">
+            Search
+          </Button>
+        </Form>
       </Container>
     </>
   );

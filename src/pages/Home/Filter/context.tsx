@@ -42,7 +42,10 @@ export const FilterProvider: FC<FilterProviderProps> = ({ children, controllerFa
   }, [isMobile]);
 
   const toggleDrawer = (open: boolean) => setState({...state, open});
-  const onSubmit = (filters: CharacterFilters) => controller.submit(filters, isLoading, searchCharacters);
+  const onSubmit = (filters: CharacterFilters) => {
+    toggleDrawer(false);
+    controller.submit(filters, isLoading, searchCharacters)
+  };
 
   return (
     <FilterContext.Provider value={{

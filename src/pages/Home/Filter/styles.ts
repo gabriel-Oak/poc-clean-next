@@ -29,3 +29,10 @@ export const FilterButton = styled(Button)`
   transform: translateX(-50%);
   z-index: 1;
 `;
+
+export const Form = styled('form')`
+  display: flex;
+  justify-content: stretch;
+  flex-direction: column;
+  gap: 16px;
+`;

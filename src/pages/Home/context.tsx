@@ -18,7 +18,7 @@ export interface HomeContextProviderProps {
 export const HomeProvider: FC<HomeContextProviderProps> = ({
   children, controllerFactory
 }) => {
-  const [state, setState] = useState<HomeState>({ 
+  const [state, setState] = useState<HomeState>({
     isLoading: false,
     page: 1,
   });
@@ -27,6 +27,28 @@ export const HomeProvider: FC<HomeContextProviderProps> = ({
     () => controllerFactory?.() ?? createHomeController(),
     []
   );
+
+  const onScroll = () => {
+    const scrolledToBottom =
+      window?.innerHeight + Math.ceil(window?.pageYOffset) + 800 >=
+      document?.body.offsetHeight;
+
+    if (scrolledToBottom) {
+      if (state.scrollTimeout) clearTimeout(state.scrollTimeout);
+
+      setState({
+        ...state,
+        scrollTimeout: setTimeout(() => {
+          controller.search({ state, setState, page: state.page + 1 });
+        }, 50),
+      });
+    }
+  };
+
+  useEffect(() => {
+    window?.addEventListener('scroll', onScroll);
+    return () => window?.removeEventListener('scroll', onScroll);
+  }, [onScroll]);
 
   useEffect(() => {
     controller.search({ state, setState });
