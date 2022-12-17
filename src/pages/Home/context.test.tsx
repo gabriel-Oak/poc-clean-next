@@ -1,6 +1,6 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
 import HomeController from './controller';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { HomeContextProps, HomeProvider, useHome } from './context';
 import createContextTester from '../../utils/createContextTester';
 

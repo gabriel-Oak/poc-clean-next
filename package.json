@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest src",
-    "prettier": "pretty-quick --staged"
+    "test": "jest src --coverage",
+    "prettier": "pretty-quick --staged",
+    "tdd": "npm test -- --watch --no-coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
