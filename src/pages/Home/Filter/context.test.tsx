@@ -1,13 +1,14 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
-import { render } from '@testing-library/react';
+import { fireEvent, render, RenderResult } from '@testing-library/react';
 import FilterController from './controller';
 import { FilterContextProps, FilterProvider, useFilter } from './context';
 import { HomeProvider } from '../context';
 import HomeController from '../controller';
 import theme from '../../../utils/theme';
 import { ThemeProvider } from '@mui/system';
-import createContextTester from '../../../utils/createContextTester';
+import createContextTester, { getContextState } from '../../../utils/createContextTester';
 import { useEffect } from 'react';
+import { act } from 'react-dom/test-utils';
 
 describe('FilterContext tests', () => {
   const controllerMock = mock<FilterController>();
@@ -26,7 +27,7 @@ describe('FilterContext tests', () => {
       }, []);
     });
 
-    render(
+    const context = render(
       <ThemeProvider theme={theme}>
         <HomeProvider controllerFactory={() => controllerHomeMock}>
           <FilterProvider
@@ -38,7 +39,36 @@ describe('FilterContext tests', () => {
       </ThemeProvider>
     );
 
+    const { state } = getContextState<FilterContextProps>(context);
+
     expect(controllerMock.submit).toHaveBeenCalledWith({}, false, expect.anything());
+    expect(state.open).toBeFalsy();
+  });
+
+  it('Should set drawer open', async () => {
+    window.innerWidth = 1600;
+
+    const Tester = createContextTester<FilterContextProps>(useFilter, ({ toggleDrawer }) => {
+      useEffect(() => {
+        toggleDrawer(true);
+      }, []);
+    });
+
+    const context = render(
+      <ThemeProvider theme={theme}>
+        <HomeProvider controllerFactory={() => controllerHomeMock}>
+          <FilterProvider
+            controllerFactory={() => controllerMock}
+          >
+            <Tester />
+          </FilterProvider>
+        </HomeProvider>
+      </ThemeProvider>
+    );;
+
+
+    const { state } = getContextState<FilterContextProps>(context!);
+    expect(state.open).toBeTruthy();
   });
 });
 

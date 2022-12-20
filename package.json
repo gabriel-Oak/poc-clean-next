@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest src --coverage",
+    "test": "jest src",
     "prettier": "pretty-quick --staged",
     "tdd": "npm test -- --watch --no-coverage"
   },
