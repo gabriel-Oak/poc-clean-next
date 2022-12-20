@@ -44,7 +44,7 @@ export const FilterProvider: FC<FilterProviderProps> = ({ children, controllerFa
   const toggleDrawer = (open: boolean) => setState({...state, open});
   const onSubmit = (filters: CharacterFilters) => {
     toggleDrawer(false);
-    controller.submit(filters, isLoading, searchCharacters)
+    controller.submit(filters, isLoading, searchCharacters);
   };
 
   return (

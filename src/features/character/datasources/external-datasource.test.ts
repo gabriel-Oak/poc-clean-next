@@ -3,7 +3,6 @@ import Character from "../models/character";
 import character from '../../../utils/mocks/characters.json';
 import { PaginatedResult } from '../../../utils/types/request';
 import CharacterExternalDatasource from '../datasources/external-datasource';
-import { AxiosInstance } from 'axios';
 import { CustomError } from '../../../utils/custom-error';
 import { mock, mockReset } from "jest-mock-extended";
 import ApiService from "../../../utils/services/api-service";

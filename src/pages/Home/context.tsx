@@ -55,7 +55,7 @@ export const HomeProvider: FC<HomeContextProviderProps> = ({
   }, []);
 
   const searchCharacters: HomeContextProps['searchCharacters'] = (page, filters) => controller
-    .search({ state, setState, filters, page })
+    .search({ state, setState, filters, page });
 
   return (
     <HomeContext.Provider value={{

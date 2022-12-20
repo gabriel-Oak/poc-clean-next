@@ -7,6 +7,7 @@ import HomeController from '../controller';
 import theme from '../../../utils/theme';
 import { ThemeProvider } from '@mui/system';
 import createContextTester from '../../../utils/createContextTester';
+import { useEffect } from 'react';
 
 describe('FilterContext tests', () => {
   const controllerMock = mock<FilterController>();
@@ -19,11 +20,13 @@ describe('FilterContext tests', () => {
 
   it('Should filter empty', async () => {
     controllerHomeMock.search.mockImplementation(() => null as never);
-    const Tester = createContextTester<FilterContextProps>(useFilter, (context) => {
-      context.onSubmit({});
+    const Tester = createContextTester<FilterContextProps>(useFilter, ({ onSubmit }) => {
+      useEffect(() => {
+        onSubmit({});
+      }, []);
     });
 
-    render(
+    const context = render(
       <ThemeProvider theme={theme}>
         <HomeProvider controllerFactory={() => controllerHomeMock}>
           <FilterProvider
@@ -35,6 +38,8 @@ describe('FilterContext tests', () => {
       </ThemeProvider>
     );
 
+    const state = context.queryByTestId('context-tester');
+    console.log(state);
     expect(controllerMock.submit).toHaveBeenCalledWith({}, false, expect.anything());
   });
 });
