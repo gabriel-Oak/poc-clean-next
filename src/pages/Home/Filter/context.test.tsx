@@ -26,7 +26,7 @@ describe('FilterContext tests', () => {
       }, []);
     });
 
-    const context = render(
+    render(
       <ThemeProvider theme={theme}>
         <HomeProvider controllerFactory={() => controllerHomeMock}>
           <FilterProvider
@@ -38,8 +38,6 @@ describe('FilterContext tests', () => {
       </ThemeProvider>
     );
 
-    const state = context.queryByTestId('context-tester');
-    console.log(state);
     expect(controllerMock.submit).toHaveBeenCalledWith({}, false, expect.anything());
   });
 });
