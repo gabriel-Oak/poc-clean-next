@@ -1,10 +1,12 @@
 import { createContext, FC, useContext, useState, ComponentType, useEffect, useMemo } from 'react';
-import { CharacterFilters } from '../../features/character/types/character-filter';
-import { createHomeController } from './controller';
+import createCharacterController from '../../features/character/controller';
+import { CharacterFilters } from '../../../features/character/types/character-filter';
 import { HomeState } from './types';
+import { IGetCharatersUsecase } from '../../../features/character/usecases/get-characters/types';
+import createGetCharactersUsecase from '../../../features/character/usecases/get-characters';
+import { useHomeState } from './hooks';
 
-export interface HomeContextProps {
-  state: HomeState;
+export interface HomeContextProps extends HomeState{
   searchCharacters: (page: number, filters?: CharacterFilters) => void;
 }
 
@@ -12,21 +14,20 @@ const HomeContext = createContext({} as HomeContextProps);
 
 export interface HomeContextProviderProps {
   children: JSX.Element;
-  controllerFactory?: typeof createHomeController;
+  getCharactersFactory?: () => IGetCharatersUsecase;
 }
 
 export const HomeProvider: FC<HomeContextProviderProps> = ({
-  children, controllerFactory
+  children, getCharactersFactory
 }) => {
+  const getCharacters = getCharactersFactory?.() ?? createGetCharactersUsecase();
+  const {} = useHomeState(getCharacters);
+
   const [state, setState] = useState<HomeState>({
     isLoading: false,
     page: 1,
   });
 
-  const controller = useMemo(
-    () => controllerFactory?.() ?? createHomeController(),
-    []
-  );
 
   const onScroll = () => {
     const scrolledToBottom =
@@ -39,7 +40,7 @@ export const HomeProvider: FC<HomeContextProviderProps> = ({
       setState({
         ...state,
         scrollTimeout: setTimeout(() => {
-          controller.search({ state, setState, page: state.page + 1 });
+           controller.search({ page: state.page + 1 });
         }, 50),
       });
     }
@@ -69,8 +70,8 @@ export const HomeProvider: FC<HomeContextProviderProps> = ({
 
 export const useHome = () => useContext(HomeContext);
 
-export const withHome = (Component: ComponentType, controller?: typeof createHomeController) => () => (
-  <HomeProvider controllerFactory={controller}>
+export const withHome = (Component: ComponentType, getCharactersFactory?: () => IGetCharatersUsecase) => () => (
+  <HomeProvider getCharactersFactory={getCharactersFactory}>
     <Component />
   </HomeProvider>
 );

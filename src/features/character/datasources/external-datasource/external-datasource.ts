@@ -1,18 +1,17 @@
-import { PaginatedResult } from '../../../utils/types/request';
-import { CustomError } from '../../../utils/custom-error';
-import Character from '../models/character';
-import { CharacterFilters } from '../types/character-filter';
-import { singleton } from 'tsyringe';
-import ApiService from '../../../utils/services/api-service';
+import { CustomError } from '../../../../utils/custom-error';
+import { IApiService } from '../../../../utils/services/api-service/types';
+import { PaginatedResult } from '../../../../utils/types/request';
+import Character from '../../models/character';
+import { CharacterFilters } from '../../types/character-filter';
+import { ICharacterExternalDatasource } from './types';
 
-@singleton()
-export default class CharacterExternalDatasource {
-  constructor(private client: ApiService) { }
+export default class CharacterExternalDatasource implements ICharacterExternalDatasource{
+  constructor(private client: IApiService) { }
 
   async getAll(params?: {
     filters?: CharacterFilters; 
     page?: number;
-  }): Promise<PaginatedResult<Character> | CustomError> {
+  }) {
     try {
       const data = await this.client.get<PaginatedResult<Character>>('/character', { params });
       return new PaginatedResult<Character>({

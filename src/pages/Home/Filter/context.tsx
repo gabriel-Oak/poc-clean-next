@@ -2,7 +2,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { ComponentType, createContext, createRef, FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { CharacterFilters } from '../../../features/character/types/character-filter';
-import { useHome } from '../context';
+import { useHome } from '../HomeContext/context';
 import FilterController, { createFilterController } from './controller';
 import { FilterInternalState, FilterState } from './types';
 

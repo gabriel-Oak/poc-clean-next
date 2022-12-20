@@ -1,14 +1,13 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
-import { fireEvent, render, RenderResult } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import FilterController from './controller';
 import { FilterContextProps, FilterProvider, useFilter } from './context';
-import { HomeProvider } from '../context';
+import { HomeProvider } from '../HomeContext/context';
 import HomeController from '../controller';
 import theme from '../../../utils/theme';
 import { ThemeProvider } from '@mui/system';
 import createContextTester, { getContextState } from '../../../utils/createContextTester';
 import { useEffect } from 'react';
-import { act } from 'react-dom/test-utils';
 
 describe('FilterContext tests', () => {
   const controllerMock = mock<FilterController>();
@@ -46,8 +45,6 @@ describe('FilterContext tests', () => {
   });
 
   it('Should set drawer open', async () => {
-    window.innerWidth = 1600;
-
     const Tester = createContextTester<FilterContextProps>(useFilter, ({ toggleDrawer }) => {
       useEffect(() => {
         toggleDrawer(true);

@@ -1,11 +1,11 @@
-// import {instance, mock, when, capture} from 'ts-mockito';
-import Character from "../models/character";
-import character from '../../../utils/mocks/characters.json';
-import { PaginatedResult } from '../../../utils/types/request';
-import CharacterExternalDatasource from '../datasources/external-datasource';
-import { CustomError } from '../../../utils/custom-error';
-import { mock, mockReset } from "jest-mock-extended";
-import ApiService from "../../../utils/services/api-service";
+import Character from '../../models/character';
+import character from '../../../../utils/mocks/characters.json';
+import { PaginatedResult } from '../../../../utils/types/request';
+import { CustomError } from '../../../../utils/custom-error';
+import { mock, mockReset } from 'jest-mock-extended';
+import CharacterExternalDatasource from './external-datasource';
+import { IApiService } from '../../../../utils/services/api-service/types';
+import createCharacterExternalDatasource from '.';
 
 describe('CharacterExternalDatasource tests', () => {
   const characterMock = new Character(character);
@@ -16,15 +16,20 @@ describe('CharacterExternalDatasource tests', () => {
     },
     results: [characterMock],
   });
-  const clientMock = mock<ApiService>();
+  const clientMock = mock<IApiService>();
 
   beforeEach(() => {
     mockReset(clientMock);
   });
 
+  it('Should create CharacterExternalDatasource', () => {
+    expect(createCharacterExternalDatasource())
+      .toBeInstanceOf(CharacterExternalDatasource);
+  });
+
   it('Should return all Characters', async () => {
     clientMock.get.mockImplementation(async () => resultMock);
-    const usecase = new CharacterExternalDatasource(clientMock); 
+    const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getAll();
     expect(result).toEqual(resultMock);
@@ -32,15 +37,15 @@ describe('CharacterExternalDatasource tests', () => {
 
   it('Should deal with error', async () => {
     clientMock.get.mockRejectedValue(Error('Ding ding ding moderforker'));
-    const usecase = new CharacterExternalDatasource(clientMock); 
+    const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getAll();
     expect(result).toBeInstanceOf(CustomError);
   });
-  
+
   it('Should return one Characters', async () => {
     clientMock.get.mockImplementation(async () => characterMock);
-    const usecase = new CharacterExternalDatasource(clientMock); 
+    const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getCharacter('1');
     expect(result).toEqual(characterMock);
@@ -48,7 +53,7 @@ describe('CharacterExternalDatasource tests', () => {
 
   it('Should deal with error', async () => {
     clientMock.get.mockRejectedValue(Error('Ding ding ding moderforker'));
-    const usecase = new CharacterExternalDatasource(clientMock); 
+    const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getCharacter('1');
     expect(result).toBeInstanceOf(CustomError);

@@ -1,5 +1,5 @@
-import Character from '../../features/character/models/character';
-import { PaginatedInfo } from '../../utils/types/request';
+import Character from '../../../features/character/models/character';
+import { PaginatedInfo } from '../../../utils/types/request';
 
 export interface HomeState {
   isLoading: boolean;
