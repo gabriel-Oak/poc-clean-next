@@ -1,4 +1,6 @@
+import { UseFormReturn } from 'react-hook-form';
 import Character from '../../../features/character/models/character';
+import { CharacterFilters } from '../../../features/character/types/character-filter';
 import { PaginatedInfo } from '../../../utils/types/request';
 
 export interface HomeState {
@@ -7,4 +9,13 @@ export interface HomeState {
   characters?: Character[];
   pagination?: PaginatedInfo;
   scrollTimeout?: NodeJS.Timeout;
+  form: UseFormReturn<CharacterFilters, unknown>;
+}
+
+export interface HomeContextProps {
+  state: HomeState;
+  search: (args: {
+    filters?: CharacterFilters;
+    page?: number;
+  }) => Promise<void>
 }

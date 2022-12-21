@@ -8,7 +8,5 @@ export interface FilterInternalState {
 }
 
 export interface FilterState extends FilterInternalState {
-  filters: CharacterFilters;
-  form: UseFormReturn<CharacterFilters, unknown>;
   isMobile: boolean;
 }

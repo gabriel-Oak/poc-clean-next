@@ -2,16 +2,16 @@ import { CharacterFilters } from '../../../features/character/types/character-fi
 import { FilterInternalState } from './types';
 
 type setState = (state: FilterInternalState) => void;
-type search = (page: number, filters?: CharacterFilters) => void;
+type search = (props: { page: number, filters?: CharacterFilters }) => void;
 
 export const createFilterController = () => {
   return new FilterController();
 }
 
 export default class FilterController {
-  constructor() {}
+  constructor() { }
 
   submit(filters: CharacterFilters, isLoading: boolean, onSubmit: search) {
-    if (!isLoading) onSubmit(1, filters);
+    if (!isLoading) onSubmit({ page: 1, filters });
   }
 }

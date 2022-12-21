@@ -8,10 +8,11 @@ import TextField from '../../../utils/components/Fields/TextField';
 import SelectField from '../../../utils/components/Fields/SelectField';
 import { CharacterStatus } from '../../../features/character/types/character-filter';
 import RadioGroupField from '../../../utils/components/Fields/RadioGroupField';
+import { useHome } from '../HomeContext/context';
 
 const FilterContent: FC = () => {
   const { onSubmit, toggleDrawer, state } = useFilter();
-  const { handleSubmit, control } = state.form;
+  const { handleSubmit, control } = useHome().state.form;
 
   const status = Object.keys(CharacterStatus).map((k) => ({
     label: `${k[0].toUpperCase()}${k.substring(1)}`,

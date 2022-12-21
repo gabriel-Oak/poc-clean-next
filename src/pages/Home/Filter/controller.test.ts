@@ -19,16 +19,16 @@ describe('FilterController tests', () => {
   it('Should validade and submit search by name', () => {
     const submit = jest.fn();
     const controller = new FilterController();
-    
-    controller.submit({name: 'juan'}, false, submit);
-    expect(submit).toHaveBeenCalledWith(1, { name: 'juan'});
+
+    controller.submit({ name: 'juan' }, false, submit);
+    expect(submit).toHaveBeenCalledWith({ page: 1, filters: { name: 'juan' } });
   });
 
   it('Should avoid calling when loading', () => {
     const submit = jest.fn();
     const controller = new FilterController();
-    
-    controller.submit({name: 'juan'}, true, submit);
+
+    controller.submit({ name: 'juan' }, true, submit);
     expect(submit).not.toHaveBeenCalled();
   });
 });

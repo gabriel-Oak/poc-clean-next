@@ -20,7 +20,7 @@ interface FilterProviderProps {
 }
 
 export const FilterProvider: FC<FilterProviderProps> = ({ children, controllerFactory }) => {
-  const { state: { isLoading }, searchCharacters } = useHome();
+  const { state: { isLoading }, search } = useHome();
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(() => breakpoints.down('md'));
 
@@ -29,8 +29,7 @@ export const FilterProvider: FC<FilterProviderProps> = ({ children, controllerFa
     windowHeight: global.innerHeight,
   } as FilterInternalState);
 
-  const form = useForm<CharacterFilters>();
-  const filters = form.watch();
+  
   const controller = useMemo(
     () => controllerFactory?.()
       || createFilterController(),
@@ -44,7 +43,7 @@ export const FilterProvider: FC<FilterProviderProps> = ({ children, controllerFa
   const toggleDrawer = (open: boolean) => setState({...state, open});
   const onSubmit = (filters: CharacterFilters) => {
     toggleDrawer(false);
-    controller.submit(filters, isLoading, searchCharacters);
+    controller.submit(filters, isLoading, search);
   };
 
   return (
@@ -52,8 +51,6 @@ export const FilterProvider: FC<FilterProviderProps> = ({ children, controllerFa
       state: {
         ...state,
         isMobile,
-        filters,
-        form,
       },
       onSubmit,
       toggleDrawer,

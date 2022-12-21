@@ -1,40 +1,41 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
-import HomeController from './controller';
-import { fireEvent, render } from '@testing-library/react';
-import { HomeContextProps, HomeProvider, useHome } from './HomeContext/context';
-import createContextTester from '../../utils/createContextTester';
+import { render } from '@testing-library/react';
+import { HomeProvider, useHome } from './context';
+import createContextTester from '../../../utils/createContextTester';
+import { IGetCharatersUsecase } from '../../../features/character/usecases/get-characters/types';
+import { HomeContextProps } from './types';
 
 describe('HomeContext tests', () => {
-  const controllerMock = mock<HomeController>();
+  const getCharactersMock = mock<IGetCharatersUsecase>();
 
   beforeEach(() => {
-    mockReset(controllerMock);
+    mockReset(getCharactersMock);
   });
 
   it('Should search for characts at startup', async () => {
     render(
       <HomeProvider
-        controllerFactory={() => controllerMock}
+        getCharactersFactory={() => getCharactersMock}
       >
         <div />
       </HomeProvider>
     );
 
-    expect(controllerMock.search).toHaveBeenCalled();
+    expect(getCharactersMock.execute).toHaveBeenCalled();
   });
 
   it('Should search for characts by name and page 2', async () => {
-    const Tester = createContextTester<HomeContextProps>(useHome, ({ searchCharacters }) => {
-      searchCharacters(2, { name: 'thigas' });
+    const Tester = createContextTester<HomeContextProps>(useHome, ({ search }) => {
+      search({page: 2, filters: { name: 'thigas' }});
     });
 
     render(
-      <HomeProvider controllerFactory={() => controllerMock}>
+      <HomeProvider getCharactersFactory={() => getCharactersMock}>
         <Tester />
       </HomeProvider>
     );
 
-    expect(controllerMock.search).toHaveBeenCalledWith(expect.objectContaining({
+    expect(getCharactersMock.execute).toHaveBeenCalledWith(expect.objectContaining({
       filters: { name: 'thigas' },
       page: 2,
     }));

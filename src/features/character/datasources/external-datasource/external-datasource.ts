@@ -5,15 +5,20 @@ import Character from '../../models/character';
 import { CharacterFilters } from '../../types/character-filter';
 import { ICharacterExternalDatasource } from './types';
 
-export default class CharacterExternalDatasource implements ICharacterExternalDatasource{
+export default class CharacterExternalDatasource implements ICharacterExternalDatasource {
   constructor(private client: IApiService) { }
 
   async getAll(params?: {
-    filters?: CharacterFilters; 
+    filters?: CharacterFilters;
     page?: number;
   }) {
     try {
-      const data = await this.client.get<PaginatedResult<Character>>('/character', { params });
+      const { page, filters } = params ?? {};
+      const data = await this.client.get<PaginatedResult<Character>>('/character', {
+        params: {
+          page, ...filters
+        }
+      });
       return new PaginatedResult<Character>({
         ...data,
         results: data.results.map((c) => new Character(c)),
