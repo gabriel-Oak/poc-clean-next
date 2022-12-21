@@ -8,7 +8,6 @@ export interface HomeState {
   page: number;
   characters?: Character[];
   pagination?: PaginatedInfo;
-  scrollTimeout?: NodeJS.Timeout;
   form: UseFormReturn<CharacterFilters, unknown>;
 }
 

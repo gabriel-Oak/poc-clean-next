@@ -1,6 +1,6 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
 import { render } from '@testing-library/react';
-import { HomeProvider, useHome } from './context';
+import { HomeProvider, useHome } from '.';
 import createContextTester from '../../../utils/createContextTester';
 import { IGetCharatersUsecase } from '../../../features/character/usecases/get-characters/types';
 import { HomeContextProps } from './types';

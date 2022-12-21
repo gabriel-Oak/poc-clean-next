@@ -1,20 +1,18 @@
 import mock, { mockReset } from 'jest-mock-extended/lib/Mock';
 import { render } from '@testing-library/react';
-import FilterController from './controller';
-import { FilterContextProps, FilterProvider, useFilter } from './context';
-import { HomeProvider } from '../HomeContext/context';
-import theme from '../../../utils/theme';
+import { FilterProvider, useFilter } from '.';
+import { HomeProvider } from '../../HomeContext';
+import theme from '../../../../utils/theme';
 import { ThemeProvider } from '@mui/system';
-import createContextTester, { getContextState } from '../../../utils/createContextTester';
+import createContextTester, { getContextState } from '../../../../utils/createContextTester';
 import { useEffect } from 'react';
-import { IGetCharatersUsecase } from '../../../features/character/usecases/get-characters/types';
+import { IGetCharatersUsecase } from '../../../../features/character/usecases/get-characters/types';
+import { FilterContextProps } from './types';
 
 describe('FilterContext tests', () => {
-  const controllerMock = mock<FilterController>();
   const getCharactersMock = mock<IGetCharatersUsecase>();
 
   beforeEach(() => {
-    mockReset(controllerMock);
     mockReset(getCharactersMock);
   });
 
@@ -29,9 +27,7 @@ describe('FilterContext tests', () => {
     const context = render(
       <ThemeProvider theme={theme}>
         <HomeProvider getCharactersFactory={() => getCharactersMock}>
-          <FilterProvider
-            controllerFactory={() => controllerMock}
-          >
+          <FilterProvider >
             <Tester />
           </FilterProvider>
         </HomeProvider>
@@ -40,23 +36,24 @@ describe('FilterContext tests', () => {
 
     const { state } = getContextState<FilterContextProps>(context);
 
-    expect(controllerMock.submit).toHaveBeenCalledWith({}, false, expect.anything());
     expect(state.open).toBeFalsy();
+    expect(getCharactersMock.execute).toHaveBeenLastCalledWith({
+      page: 1,
+      filters: {},
+    })
   });
 
   it('Should set drawer open', async () => {
-    const Tester = createContextTester<FilterContextProps>(useFilter, ({ toggleDrawer }) => {
+    const Tester = createContextTester<FilterContextProps>(useFilter, ({ setOpen }) => {
       useEffect(() => {
-        toggleDrawer(true);
+        setOpen(true);
       }, []);
     });
 
     const context = render(
       <ThemeProvider theme={theme}>
         <HomeProvider getCharactersFactory={() => getCharactersMock}>
-          <FilterProvider
-            controllerFactory={() => controllerMock}
-          >
+          <FilterProvider >
             <Tester />
           </FilterProvider>
         </HomeProvider>

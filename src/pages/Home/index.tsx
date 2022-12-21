@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import CharacterCard from './Character';
-import { useHome } from './HomeContext/context';
+import { useHome } from './HomeContext';
 import Filter from './Filter';
 import { CardList, Loader, Root } from './styles';
 

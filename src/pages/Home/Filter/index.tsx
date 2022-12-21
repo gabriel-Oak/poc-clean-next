@@ -1,18 +1,18 @@
 import { Drawer } from '@mui/material';
-import React, { FC, Fragment } from 'react';
-import { useFilter } from './context';
+import React, { FC } from 'react';
 import FilterContent from './FilterContent';
+import { useFilter } from './FilterContext';
 import { FilterButton } from './styles';
 
 const Filter: FC = () => {
-  const { toggleDrawer, state } = useFilter();
+  const { setOpen, state } = useFilter();
   
   return (
     <>
     {state.isMobile ? (
       <Drawer
         open={state.open}
-        onClose={() => toggleDrawer(false)}
+        onClose={() => setOpen(false)}
       >
         <FilterContent />
       </Drawer>
@@ -23,7 +23,7 @@ const Filter: FC = () => {
       {state.isMobile && (
         <FilterButton
           variant='contained'
-          onClick={() => toggleDrawer(!state.open)}
+          onClick={() => setOpen(!state.open)}
         >
           Filtros
         </FilterButton>

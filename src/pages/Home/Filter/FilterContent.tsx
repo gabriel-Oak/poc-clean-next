@@ -1,17 +1,19 @@
 import { FC } from 'react';
 import { Close } from '@mui/icons-material';
-import { Button, Divider, FormControlLabel, IconButton, MenuItem, Radio, Toolbar } from '@mui/material';
+import {
+  Button, Divider, FormControlLabel, IconButton, MenuItem, Radio, Toolbar,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import { Container, Form } from './styles';
-import { useFilter } from './context';
 import TextField from '../../../utils/components/Fields/TextField';
 import SelectField from '../../../utils/components/Fields/SelectField';
 import { CharacterStatus } from '../../../features/character/types/character-filter';
 import RadioGroupField from '../../../utils/components/Fields/RadioGroupField';
-import { useHome } from '../HomeContext/context';
+import { useHome } from '../HomeContext';
+import { useFilter } from './FilterContext';
 
 const FilterContent: FC = () => {
-  const { onSubmit, toggleDrawer, state } = useFilter();
+  const { onSubmit, setOpen, state } = useFilter();
   const { handleSubmit, control } = useHome().state.form;
 
   const status = Object.keys(CharacterStatus).map((k) => ({
@@ -25,7 +27,7 @@ const FilterContent: FC = () => {
         <>
           <Toolbar>
             <Box marginLeft="auto">
-              <IconButton onClick={() => toggleDrawer(false)}>
+              <IconButton onClick={() => setOpen(false)}>
                 <Close />
               </IconButton>
             </Box>
