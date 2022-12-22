@@ -24,13 +24,13 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
     if (isLoading) return;
     setIsLoading(true);
     const result = await getCharacters.execute(args);
-
+    
     if (result instanceof PaginatedResult) {
       const isFirstpage = Number(args?.page) === 1;
-
+      
       setCharacters(
         !isFirstpage ? characters.concat(result.results)
-          : result.results);
+        : result.results);
       setPagination(result.info);
       setPage(args?.page || page);
       
@@ -49,7 +49,6 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
       document?.body.offsetHeight;
 
     if (scrolledToBottom && !scrollTimeout) {
-      console.log('entrou');
       
       scrollTimeout = setTimeout(() => {
         search({ page: page + 1, filters });

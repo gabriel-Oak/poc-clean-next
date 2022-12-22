@@ -1,4 +1,5 @@
-import { RenderResult } from "@testing-library/react";
+import { act, render, RenderResult } from "@testing-library/react";
+import { useEffect } from 'react';
 
 export default function createContextTester<ContextProps>(
   useContextHook: () => ContextProps,
@@ -18,9 +19,9 @@ export default function createContextTester<ContextProps>(
 export function getContextState<ContextProps>(context: RenderResult): ContextProps {
   if (!context.container.querySelector('#context-tester')?.innerHTML)
     throw new Error("Context is empty");
-    
+
   return JSON.parse(context
-      .container
-      .querySelector('#context-tester')!
-      .innerHTML);
+    .container
+    .querySelector('#context-tester')!
+    .innerHTML);
 }
