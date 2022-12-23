@@ -9,6 +9,7 @@ export interface HomeState {
   characters?: Character[];
   pagination?: PaginatedInfo;
   form: UseFormReturn<CharacterFilters, unknown>;
+  isScrolled: boolean;
 }
 
 export interface HomeContextProps {
@@ -17,4 +18,5 @@ export interface HomeContextProps {
     filters?: CharacterFilters;
     page?: number;
   }) => Promise<void>
+  backToTop: () => void;
 }

@@ -28,6 +28,17 @@ const useFilterController = (homeController: HomeContextProps): FilterContextPro
     setHeight(window.innerHeight);
   }
 
+  const clearFilters = () => {
+    homeController.state.form.reset({
+      gender: '', 
+      name: '', 
+      species: '', 
+      status: undefined, 
+      type: '', 
+    });
+    homeController.search({ page: 1 });
+  }
+
   useEffect(() => {
     window.addEventListener('resize', onResize);
     () => window.removeEventListener('resize', onResize);
@@ -42,6 +53,7 @@ const useFilterController = (homeController: HomeContextProps): FilterContextPro
     },
     setOpen,
     onSubmit,
+    clearFilters,
   };
 }
 

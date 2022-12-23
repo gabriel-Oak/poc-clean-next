@@ -25,7 +25,7 @@ const Filter: FC = () => {
           variant='contained'
           onClick={() => setOpen(!state.open)}
         >
-          Filtros
+          Filters
         </FilterButton>
       )}
     </>

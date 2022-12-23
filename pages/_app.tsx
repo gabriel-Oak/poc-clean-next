@@ -24,7 +24,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
       <AppBar>
         <Toolbar>
-          CLEAN NEXT.JS
+          CLEAN NEXT.JS - RICK & MORTY
         </Toolbar>
       </AppBar>
 

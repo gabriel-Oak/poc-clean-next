@@ -13,4 +13,5 @@ export interface FilterContextProps {
   state: FilterState;
   setOpen: (v: boolean) => void;
   onSubmit: (filters: CharacterFilters) => void;
+  clearFilters: () => void;
 }

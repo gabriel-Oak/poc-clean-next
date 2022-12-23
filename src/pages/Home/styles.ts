@@ -29,3 +29,12 @@ export const Loader = styled(LinearProgress)`
   left: 0;
   width: 100vw;
 `;
+
+export const FloatinContainer = styled('aside')`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;

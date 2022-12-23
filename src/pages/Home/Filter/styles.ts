@@ -36,3 +36,12 @@ export const Form = styled('form')`
   flex-direction: column;
   gap: 16px;
 `;
+
+export const FilterActions = styled('div')(({ theme }) => `
+  display: flex;
+  gap: 8px;
+
+  ${theme.breakpoints.down('sm')} {
+    flexDirection: column;
+  }
+`);

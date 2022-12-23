@@ -2,10 +2,15 @@ import React, { FC } from 'react';
 import CharacterCard from './Character';
 import { useHome } from './HomeContext';
 import Filter from './Filter';
-import { CardList, Loader, Root } from './styles';
+import { CardList, FloatinContainer, Loader, Root } from './styles';
+import { Fab, Grow } from '@mui/material';
+import { ArrowUpward } from '@mui/icons-material';
 
 const Home: FC = () => {
-  const { state: { isLoading, characters } } = useHome();
+  const { 
+    state: { isLoading, characters, isScrolled },
+    backToTop, 
+  } = useHome();
 
   return (
     <Root>
@@ -21,6 +26,15 @@ const Home: FC = () => {
           />
         ))}
       </CardList>
+
+
+      <FloatinContainer>
+        <Grow in={isScrolled}>
+          <Fab color="primary" size="large" onClick={backToTop}>
+            <ArrowUpward />
+          </Fab>
+        </Grow>
+      </FloatinContainer>
     </Root>
   );
 }

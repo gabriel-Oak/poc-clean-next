@@ -4,7 +4,7 @@ import {
   Button, Divider, FormControlLabel, IconButton, MenuItem, Radio, Toolbar,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { Container, Form } from './styles';
+import { Container, FilterActions, Form } from './styles';
 import TextField from '../../../utils/components/Fields/TextField';
 import SelectField from '../../../utils/components/Fields/SelectField';
 import { CharacterStatus } from '../../../features/character/types/character-filter';
@@ -13,7 +13,7 @@ import { useHome } from '../HomeContext';
 import { useFilter } from './FilterContext';
 
 const FilterContent: FC = () => {
-  const { onSubmit, setOpen, state } = useFilter();
+  const { onSubmit, setOpen, state, clearFilters } = useFilter();
   const { handleSubmit, control } = useHome().state.form;
 
   const status = Object.keys(CharacterStatus).map((k) => ({
@@ -106,9 +106,21 @@ const FilterContent: FC = () => {
             ))}
           </RadioGroupField>
 
+          <FilterActions>
+          <Button 
+            type="button" 
+            onClick={clearFilters} 
+            fullWidth 
+            color="secondary" 
+            variant="contained"
+          >
+            Clear
+          </Button>
+
           <Button type="submit" fullWidth variant="contained">
             Search
           </Button>
+          </FilterActions>
         </Form>
       </Container>
     </>

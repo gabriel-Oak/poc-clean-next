@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Character from '../../../features/character/models/character';
 import { CharacterFilters } from '../../../features/character/types/character-filter';
@@ -10,6 +10,7 @@ let scrollTimeout: NodeJS.Timeout;
 
 export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeContextProps => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [page, setPage] = useState(1);
   const [characters, setCharacters] = useState([] as Character[]);
   const [pagination, setPagination] = useState(null as unknown as PaginatedInfo);
@@ -23,8 +24,8 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
   }) => {
     if (isLoading) return;
     setIsLoading(true);
-    const result = await getCharacters.execute(args);
-    
+
+    const result = await getCharacters.execute(args);    
     if (result instanceof PaginatedResult) {
       const isFirstpage = Number(args?.page) === 1;
       
@@ -42,8 +43,8 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
   }
 
   const onScroll = () => {
+    setIsScrolled(window?.pageYOffset > 400);
     if (isLoading) return;
-
     const scrolledToBottom =
       window?.innerHeight + Math.ceil(window?.pageYOffset) + 800 >=
       document?.body.offsetHeight;
@@ -55,6 +56,10 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
         scrollTimeout = clearTimeout(scrollTimeout) as unknown as NodeJS.Timeout;
       }, 100);
     }
+  }
+
+  const backToTop = () => {
+    window?.scroll(0, 0);
   }
 
   useEffect(() => {
@@ -72,8 +77,10 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
       page,
       characters,
       pagination,
-      form
+      form,
+      isScrolled,
     },
     search,
+    backToTop,
   };
 }
