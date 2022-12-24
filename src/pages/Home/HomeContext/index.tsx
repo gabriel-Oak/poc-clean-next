@@ -9,13 +9,12 @@ const HomeContext = createContext({} as HomeContextProps);
 
 export interface HomeContextProviderProps {
   children: JSX.Element;
-  getCharactersFactory?: () => IGetCharatersUsecase;
 }
 
 export const HomeProvider: FC<HomeContextProviderProps> = ({
-  children, getCharactersFactory
+  children
 }) => {
-  const getCharacters = getCharactersFactory?.() ?? createGetCharactersUsecase();
+  const getCharacters = createGetCharactersUsecase();
   const controller = useHomeController(getCharacters);
 
   return (
@@ -27,8 +26,8 @@ export const HomeProvider: FC<HomeContextProviderProps> = ({
 
 export const useHome = () => useContext(HomeContext);
 
-export const withHome = (Component: ComponentType, getCharactersFactory?: () => IGetCharatersUsecase) => () => (
-  <HomeProvider getCharactersFactory={getCharactersFactory}>
+export const withHome = (Component: ComponentType) => () => (
+  <HomeProvider >
     <Component />
   </HomeProvider>
 );
