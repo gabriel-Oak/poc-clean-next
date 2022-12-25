@@ -13,6 +13,7 @@ import {
 } from '@mui/material/styles';
 import theme from '../src/utils/theme';
 import { AppBar, Toolbar } from '@mui/material';
+import Link from 'next/link';
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
@@ -24,12 +25,14 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
       <AppBar>
         <Toolbar>
-          CLEAN NEXT.JS - RICK & MORTY
+          <Link href="/">
+            CLEAN NEXT.JS - RICK & MORTY
+          </Link>
         </Toolbar>
       </AppBar>
 
       <Component {...pageProps} />
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 

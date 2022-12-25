@@ -1,5 +1,6 @@
 import { CardMedia, Typography } from '@mui/material';
-import React, { FC } from 'react';
+import Link from 'next/link';
+import React, { FC, memo } from 'react';
 import Character from '../../../features/character/models/character';
 import { Container, Content, ImageContainer, Name, Root, Subtitle } from './styles';
 
@@ -11,47 +12,50 @@ const CharacterCard: FC<CharacterCardsProps> = ({
   character
 }) => {
   return (
-    <Root>
-      <Container>
-        <ImageContainer>
-          <CardMedia 
-            component="img"
-            src={character.image} 
-            height="100%"
-          />
-        </ImageContainer>
+    <Link href={`/character/${character.id}`}>
+      <Root>
+        <Container>
+          <ImageContainer>
+            <CardMedia
+              component="img"
+              src={character.image}
+              height="100%"
+            />
+          </ImageContainer>
 
-        <Content>
-          <div>
-            <Name variant='h4' fontWeight={500}>
-              {character.name}
-            </Name>
-            <Typography variant='body1'>
-              {`${character.status} - ${character.species}`}
-            </Typography>
-          </div>
+          <Content>
+            <div>
+              <Name variant='h4' fontWeight={500}>
+                {character.name}
+              </Name>
 
-          <div>
-            <Subtitle variant='subtitle1'>
-              Last known location:
-            </Subtitle>
-            <Typography variant='body1'>
-              {character.location.name}
-            </Typography>
-          </div>
+              <Typography variant='body1'>
+                {`${character.status} - ${character.species}`}
+              </Typography>
+            </div>
 
-          <div>
-            <Subtitle variant='subtitle1'>
-              First seen in:
-            </Subtitle>
-            <Typography variant='body1'>
-              {character.origin.name}
-            </Typography>
-          </div>
-        </Content>
-      </Container>
-    </Root>
+            <div>
+              <Subtitle variant='subtitle1'>
+                Last known location:
+              </Subtitle>
+              <Typography variant='body1'>
+                {character.location.name}
+              </Typography>
+            </div>
+
+            <div>
+              <Subtitle variant='subtitle1'>
+                First seen in:
+              </Subtitle>
+              <Typography variant='body1'>
+                {character.origin.name}
+              </Typography>
+            </div>
+          </Content>
+        </Container>
+      </Root>
+    </Link>
   );
 }
 
-export default CharacterCard;
+export default memo(CharacterCard);

@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { FC } from 'react';
 
 const CharacterSkeleton: FC = () => (
-  <Box p={3} pt={1} >
+  <Box>
     <Grid container spacing={2}>
       <Grid item xs={12} md={5}>
         <Skeleton variant="rectangular" height={300} />
@@ -11,7 +11,7 @@ const CharacterSkeleton: FC = () => (
 
       <Grid item xs={12} md={7}>
         <Box maxWidth={500}>
-          <Skeleton variant="rounded" height={32} />
+          <Skeleton variant="rounded" height={40} />
         </Box>
 
         <Box maxWidth={300} mt={3}>

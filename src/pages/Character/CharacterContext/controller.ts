@@ -7,20 +7,23 @@ import { CharacterContextProps } from './types';
 
 const useCharacterController = (usecase: IGetDetailsUsecase): CharacterContextProps => {
   const { query: { characterId } } = useRouter();
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [character, setCharacter] = useState(null as unknown as Character);
   const [errorState, setErrorState] = useState<CustomError | null>(null);
 
   const search = async (id: string) => {
     if (isLoading) return;
-    
+
     setErrorState(null);
     setIsLoading(true);
 
-    const result = await usecase.execute(id);    
+    const result = await usecase.execute(id);
     if (result instanceof Error) setErrorState(result);
     else setCharacter(result);
+    const index = window.location.href.lastIndexOf('/');
+    const url = `${window.location.href.substring(0, index)}/${id}`
+    window.history.pushState({}, '', url);
 
     setIsLoading(false);
   }
