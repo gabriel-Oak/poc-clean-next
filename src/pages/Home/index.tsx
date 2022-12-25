@@ -3,14 +3,16 @@ import CharacterCard from './Character';
 import { useHome } from './HomeContext';
 import Filter from './Filter';
 import { CardList, FloatinContainer, Loader, Root } from './styles';
-import { Fab, Grow } from '@mui/material';
+import { Fab, Grow, Typography } from '@mui/material';
 import { ArrowUpward } from '@mui/icons-material';
+import { Box } from '@mui/system';
 
 const Home: FC = () => {
-  const { 
-    state: { isLoading, characters, isScrolled },
-    backToTop, 
+  const {
+    state: { isLoading, characters, isScrolled, errorState },
+    backToTop,
   } = useHome();
+  console.log(errorState);
 
   return (
     <Root>
@@ -18,14 +20,29 @@ const Home: FC = () => {
 
       <Filter />
 
-      <CardList >
-        {characters?.map((character) => (
-          <CharacterCard
-            key={character.id}
-            character={character}
-          />
-        ))}
-      </CardList>
+      <div>
+        <CardList >
+          {characters?.map((character) => (
+            <CharacterCard
+              key={character.id}
+              character={character}
+            />
+          ))}
+        </CardList>
+
+        {errorState && (
+          <Box mt={2}>
+            <Typography textAlign="center" variant="h5">
+              Oops, got an error searching characters
+            </Typography>
+
+            <Typography textAlign="center" variant="body1">
+              {errorState.message}
+            </Typography>
+          </Box>
+        )}
+      </div>
+
 
 
       <FloatinContainer>

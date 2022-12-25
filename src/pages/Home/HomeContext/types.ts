@@ -1,6 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import Character from '../../../features/character/models/character';
 import { CharacterFilters } from '../../../features/character/types/character-filter';
+import { CustomError } from '../../../utils/custom-error';
 import { PaginatedInfo } from '../../../utils/types/request';
 
 export interface HomeState {
@@ -10,6 +11,7 @@ export interface HomeState {
   pagination?: PaginatedInfo;
   form: UseFormReturn<CharacterFilters, unknown>;
   isScrolled: boolean;
+  errorState?: CustomError | null;
 }
 
 export interface HomeContextProps {

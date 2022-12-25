@@ -6,6 +6,7 @@ import { PaginatedResult } from '../../../utils/types/request';
 import { renderHook } from '@testing-library/react-hooks'
 import { useHomeController } from './controller';
 import { act } from '@testing-library/react';
+import { CustomError } from '../../../utils/custom-error';
 
 describe('useHomeController tests', () => {
   const getCharactersMock = mock<IGetCharatersUsecase>();
@@ -82,12 +83,24 @@ describe('useHomeController tests', () => {
   it('Should set page back to top', async () => {
     jest.spyOn(window, 'scroll').mockImplementation(() => window.scrollY = 0);
     getCharactersMock.execute.mockImplementationOnce(async () => resultMock);
-    const { result, waitForNextUpdate } = await act(async () => await renderHook(
+    const { result } = await act(async () => await renderHook(
       () => useHomeController(getCharactersMock))
     );
 
     expect(global.scrollY).not.toBe(0);
     await act(async () => await result.current.backToTop());
     expect(global.scrollY).toBe(0);
+  });
+
+  it('Should set error state when... got an error!', async () => {
+    getCharactersMock.execute.mockImplementation(async () => new CustomError({
+      message: 'Oppsie, can not find any character'
+    }));
+    const {
+      result
+    } = await act(
+      async () => await renderHook(() => useHomeController(getCharactersMock))
+    );
+    expect(result.current.state.errorState).toBeInstanceOf(CustomError);
   });
 });

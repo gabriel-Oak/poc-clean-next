@@ -1,7 +1,9 @@
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const Root = styled(Card)``;
+export const Root = styled(Card)`
+  height: 100%;
+`;
 
 export const Container = styled('article')`
   display: flex;

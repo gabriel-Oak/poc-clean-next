@@ -34,7 +34,7 @@ export default class CharacterExternalDatasource implements ICharacterExternalDa
   async getCharacter(id: string): Promise<Character | CustomError> {
     try {
       const data = await this.client.get<Character>(`/character/${id}`);
-      return data;
+      return new Character(data);
     } catch (error) {
       return new CustomError({
         error,
