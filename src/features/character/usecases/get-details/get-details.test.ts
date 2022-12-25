@@ -5,13 +5,17 @@ import { mock, mockReset } from 'jest-mock-extended';
 import { ICharacterExternalDatasource } from '../../datasources/external-datasource/types';
 import createGetDetailsUsecase from '.';
 import GetDetailsUsecase from './get-details';
+import { ICharacterLocalDatasource } from '../../datasources/local-datasource/type';
 
 describe('GetDetails tests', () => {
   const characterMock = new Character(character);
-  const datasourceMock = mock<ICharacterExternalDatasource>();
+  const externalDatasourceMock = mock<ICharacterExternalDatasource>();
+  const localDatasourceMock = mock<ICharacterLocalDatasource>();
+  const usecase = new GetDetailsUsecase(externalDatasourceMock, localDatasourceMock);
 
   beforeEach(() => {
-    mockReset(datasourceMock);
+    mockReset(externalDatasourceMock);
+    mockReset(localDatasourceMock);
   });
 
   it('Should create GetDetails', () => {
@@ -20,17 +24,24 @@ describe('GetDetails tests', () => {
   });
 
   it('Should return instance of a Character', async () => {
-    datasourceMock.getCharacter.mockImplementation(async () => characterMock);
-    const usecase = new GetDetailsUsecase(datasourceMock);
+    externalDatasourceMock.getCharacter.mockImplementation(async () => characterMock);
 
     const result = await usecase.execute('1');
-    expect(result).toEqual((characterMock));
+    expect(result).toEqual(characterMock);
+    expect(result).toBeInstanceOf(Character);
+    expect(localDatasourceMock.saveCharacter).toHaveBeenCalledWith(characterMock);
   });
 
   it('Should validade id', async () => {
-    const usecase = new GetDetailsUsecase(datasourceMock);
     const result = await usecase.execute('');
-
     expect(result).toBeInstanceOf(CustomError);
+  });
+
+  it('Shoudl get from local storage', async () => {
+    localDatasourceMock.getCharacter.mockImplementation(() => characterMock);
+    const result = await usecase.execute('23');
+
+    expect(result).toEqual((characterMock));
+    expect(externalDatasourceMock.getCharacter).not.toHaveBeenCalled();
   });
 });

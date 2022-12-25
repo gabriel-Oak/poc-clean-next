@@ -10,7 +10,8 @@ export const Root = styled('main')`
 
 export const CharacterImage = styled(Image)`
   width: 100%; 
-  max-width: 500px; 
+  max-height: 352px; 
+  object-fit: cover;
   height: auto; 
   border-radius: 16px;
 `;

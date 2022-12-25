@@ -20,7 +20,7 @@ const Home: FC = () => {
 
       <Filter />
 
-      <div>
+      <Box width="100%">
         <CardList >
           {characters?.map((character) => (
             <CharacterCard
@@ -33,7 +33,7 @@ const Home: FC = () => {
         {errorState && (
           <Box mt={2}>
             <Typography textAlign="center" variant="h5">
-              Oops, got an error searching characters
+              Got an error searching characters
             </Typography>
 
             <Typography textAlign="center" variant="body1">
@@ -41,7 +41,7 @@ const Home: FC = () => {
             </Typography>
           </Box>
         )}
-      </div>
+      </Box>
 
 
 
