@@ -29,19 +29,19 @@ export const useHomeController = (getCharacters: IGetCharatersUsecase): HomeCont
     setIsLoading(true);
 
     const result = await getCharacters.execute(args);
-    if (result instanceof PaginatedResult) {
+    if (result.isRight) {
       const isFirstpage = Number(args?.page) === 1;
 
       setCharacters(!isFirstpage
-        ? characters.concat(result.results)
-        : result.results);
-      setPagination(result.info);
+        ? characters.concat(result.success.results)
+        : result.success.results);
+      setPagination(result.success.info);
       setPage(args?.page || page);
 
       if (isFirstpage) window.scrollTo({ top: 0 });
       if (errorState) setErrorState(null);
     } else {
-      setErrorState(result);      
+      setErrorState(result.error);      
     }
     setIsLoading(false);
   }

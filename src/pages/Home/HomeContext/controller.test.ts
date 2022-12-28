@@ -7,6 +7,7 @@ import { renderHook } from '@testing-library/react-hooks'
 import { useHomeController } from './controller';
 import { act } from '@testing-library/react';
 import { CustomError } from '../../../utils/custom-error';
+import { Left, Right } from '../../../utils/types/either';
 
 describe('useHomeController tests', () => {
   const getCharactersMock = mock<IGetCharatersUsecase>();
@@ -37,7 +38,7 @@ describe('useHomeController tests', () => {
   });
 
   it('Should get initial characters', async () => {
-    getCharactersMock.execute.mockImplementation(async () => resultMock);
+    getCharactersMock.execute.mockImplementation(async () => new Right(resultMock));
     const {
       result
     } = await act(
@@ -47,14 +48,14 @@ describe('useHomeController tests', () => {
   });
 
   it('Should search for characters and update state', async () => {
-    getCharactersMock.execute.mockImplementationOnce(async () => resultMockEmpty);
+    getCharactersMock.execute.mockImplementationOnce(async () => new Right(resultMockEmpty));
     const { result } = await act(async () => await renderHook(
       () => useHomeController(getCharactersMock))
     );
 
     expect(result.current.state.characters).toEqual([]);
 
-    getCharactersMock.execute.mockImplementation(async () => resultMock);
+    getCharactersMock.execute.mockImplementation(async () => new Right(resultMock));
     await act(async () =>
       result.current.search({ filters: { name: 'Juan Sanchez' } }));
 
@@ -63,13 +64,13 @@ describe('useHomeController tests', () => {
   });
 
   it('Should scroll to bottom and increment state', async () => {
-    getCharactersMock.execute.mockImplementationOnce(async () => resultMock);
+    getCharactersMock.execute.mockImplementationOnce(async () => new Right(resultMock));
     const { result, waitForNextUpdate } = await act(async () => await renderHook(
       () => useHomeController(getCharactersMock))
     );
     expect(result.current.state.page).toBe(1);
 
-    getCharactersMock.execute.mockImplementation(async () => resultMock);
+    getCharactersMock.execute.mockImplementation(async () => new Right(resultMock));
     scrollWindow(0, window.innerHeight);
     await waitForNextUpdate();
 
@@ -82,7 +83,7 @@ describe('useHomeController tests', () => {
 
   it('Should set page back to top', async () => {
     jest.spyOn(window, 'scroll').mockImplementation(() => window.scrollY = 0);
-    getCharactersMock.execute.mockImplementationOnce(async () => resultMock);
+    getCharactersMock.execute.mockImplementationOnce(async () => new Right(resultMock));
     const { result } = await act(async () => await renderHook(
       () => useHomeController(getCharactersMock))
     );
@@ -93,9 +94,9 @@ describe('useHomeController tests', () => {
   });
 
   it('Should set error state when... got an error!', async () => {
-    getCharactersMock.execute.mockImplementation(async () => new CustomError({
+    getCharactersMock.execute.mockImplementation(async () => new Left(new CustomError({
       message: 'Oppsie, can not find any character'
-    }));
+    })));
     const {
       result
     } = await act(

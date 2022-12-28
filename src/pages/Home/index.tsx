@@ -12,7 +12,6 @@ const Home: FC = () => {
     state: { isLoading, characters, isScrolled, errorState },
     backToTop,
   } = useHome();
-  console.log(errorState);
 
   return (
     <Root>
