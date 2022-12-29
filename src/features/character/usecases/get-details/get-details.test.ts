@@ -6,6 +6,7 @@ import { ICharacterExternalDatasource } from '../../datasources/external-datasou
 import createGetDetailsUsecase from '.';
 import GetDetailsUsecase from './get-details';
 import { ICharacterLocalDatasource } from '../../datasources/local-datasource/type';
+import { Right } from '../../../../utils/types/either';
 
 describe('GetDetails tests', () => {
   const characterMock = new Character(character);
@@ -24,7 +25,7 @@ describe('GetDetails tests', () => {
   });
 
   it('Should return instance of a Character', async () => {
-    externalDatasourceMock.getCharacter.mockImplementation(async () => characterMock);
+    externalDatasourceMock.getCharacter.mockImplementation(async () => new Right(characterMock));
 
     const result = await usecase.execute('1');
     expect(result).toEqual(characterMock);

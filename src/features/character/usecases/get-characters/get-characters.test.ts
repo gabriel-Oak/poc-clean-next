@@ -5,6 +5,7 @@ import { PaginatedResult } from '../../../../utils/types/request';
 import { mock, mockReset } from 'jest-mock-extended';
 import { ICharacterExternalDatasource } from '../../datasources/external-datasource/types';
 import createGetCharactersUsecase from '.';
+import { Right } from '../../../../utils/types/either';
 
 describe('GetCharactersUsecase tests', () => {
   const characterMock = new Character(character);
@@ -27,10 +28,11 @@ describe('GetCharactersUsecase tests', () => {
   });
 
   it('Should return instance of a Character', async () => {
-    datasourceMock.getAll.mockImplementation(async () => resultMock);
+    datasourceMock.getAll.mockImplementation(async () => new Right(resultMock));
     const usecase = new GetCharactersUsecase(datasourceMock); 
-
     const result = await usecase.execute();
-    expect(result).toEqual((resultMock));
+
+    expect(result).toBeInstanceOf((Right));
+    expect((result as Right<unknown>).success).toEqual((resultMock));
   });
 });

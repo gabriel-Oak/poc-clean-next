@@ -11,7 +11,7 @@ export default class GetCharactersUsecase implements IGetCharatersUsecase {
   async execute(args?: {
     filters?: CharacterFilters;
     page?: number;
-  }): Promise<PaginatedResult<Character> | CustomError> {
+  }) {
     return this.datasource.getAll(args);
   };
 }

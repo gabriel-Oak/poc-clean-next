@@ -6,6 +6,7 @@ import { mock, mockReset } from 'jest-mock-extended';
 import CharacterExternalDatasource from './external-datasource';
 import { IApiService } from '../../../../utils/services/api-service/types';
 import createCharacterExternalDatasource from '.';
+import { Left, Right } from '../../../../utils/types/either';
 
 describe('CharacterExternalDatasource tests', () => {
   const characterMock = new Character(character);
@@ -32,7 +33,8 @@ describe('CharacterExternalDatasource tests', () => {
     const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getAll();
-    expect(result).toEqual(resultMock);
+    expect(result).toBeInstanceOf(Right);
+    expect((result as Right<unknown>).success).toEqual(resultMock);
   });
 
   it('Should deal with error', async () => {
@@ -40,7 +42,8 @@ describe('CharacterExternalDatasource tests', () => {
     const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getAll();
-    expect(result).toBeInstanceOf(CustomError);
+    expect(result).toBeInstanceOf(Left);
+    expect((result as Left<unknown>).error).toBeInstanceOf(CustomError);
   });
 
   it('Should return one Characters', async () => {
@@ -48,7 +51,8 @@ describe('CharacterExternalDatasource tests', () => {
     const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getCharacter('1');
-    expect(result).toEqual(characterMock);
+    expect(result).toBeInstanceOf(Right);
+    expect((result as Right<unknown>).success).toEqual(characterMock);
   });
 
   it('Should deal with error', async () => {
@@ -56,6 +60,7 @@ describe('CharacterExternalDatasource tests', () => {
     const usecase = new CharacterExternalDatasource(clientMock);
 
     const result = await usecase.getCharacter('1');
-    expect(result).toBeInstanceOf(CustomError);
+    expect(result).toBeInstanceOf(Left);
+    expect((result as Left<unknown>).error).toBeInstanceOf(CustomError);
   });
 });
