@@ -6,7 +6,7 @@ import { ICharacterExternalDatasource } from '../../datasources/external-datasou
 import createGetDetailsUsecase from '.';
 import GetDetailsUsecase from './get-details';
 import { ICharacterLocalDatasource } from '../../datasources/local-datasource/type';
-import { Right } from '../../../../utils/types/either';
+import { Left, Right } from '../../../../utils/types/either';
 
 describe('GetDetails tests', () => {
   const characterMock = new Character(character);
@@ -26,23 +26,26 @@ describe('GetDetails tests', () => {
 
   it('Should return instance of a Character', async () => {
     externalDatasourceMock.getCharacter.mockImplementation(async () => new Right(characterMock));
-
     const result = await usecase.execute('1');
-    expect(result).toEqual(characterMock);
-    expect(result).toBeInstanceOf(Character);
-    expect(localDatasourceMock.saveCharacter).toHaveBeenCalledWith(characterMock);
+
+    expect(result).toBeInstanceOf(Right);
+    expect((result as Right<unknown>).success).toEqual(characterMock);
+    expect(localDatasourceMock.saveCharacter).not.toHaveBeenCalledWith(characterMock);
   });
 
   it('Should validade id', async () => {
     const result = await usecase.execute('');
-    expect(result).toBeInstanceOf(CustomError);
+
+    expect(result).toBeInstanceOf(Left);
+    expect((result as Left<unknown>).error).toBeInstanceOf(CustomError);
   });
 
   it('Shoudl get from local storage', async () => {
     localDatasourceMock.getCharacter.mockImplementation(() => characterMock);
     const result = await usecase.execute('23');
 
-    expect(result).toEqual((characterMock));
+    expect(result).toBeInstanceOf((Right));
+    expect((result as Right<unknown>).success).toEqual(characterMock);
     expect(externalDatasourceMock.getCharacter).not.toHaveBeenCalled();
   });
 });
